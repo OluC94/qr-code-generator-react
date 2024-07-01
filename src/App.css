@@ -5,6 +5,13 @@
   text-align: center;
 }
 
+.code-tile{
+  border: solid black 1px;
+  background-color: lightgray;
+  border-radius: 5px;
+  margin: 5px;
+}
+
 .logo {
   height: 6em;
   padding: 1.5em;
