@@ -1,5 +1,6 @@
 export default function RecentCodes(props) {
-  const codeList = props.lastFiveCodes.map((code, index) => {
+  const lastFiveCodes = props.allCodes.slice(0, 5);
+  const codeList = lastFiveCodes.map((code, index) => {
     return (
       <div className="code-tile" key={index}>
         <p>{code.text}</p>

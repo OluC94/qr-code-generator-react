@@ -5,7 +5,7 @@ import RecentCodes from "./components/RecentCodes";
 export default function QRCodeGenerator() {
   const [inputUrl, setInputUrl] = useState("");
   const [myDataURL, setMyDataURL] = useState("");
-  const [lastFiveCodes, setLastFiveCodes] = useState([])
+  const [allCodes, setAllCodes] = useState([]);
 
   function handleUrlInput(event) {
     setInputUrl(event.target.value);
@@ -18,7 +18,10 @@ export default function QRCodeGenerator() {
   function generateQRCode(codeText) {
     return QRCode.toDataURL(codeText).then((generatedURL) => {
       setMyDataURL(generatedURL);
-      setLastFiveCodes(currArr => [...currArr, {text: codeText, url: generatedURL}])
+      setAllCodes((currArr) => [
+        { text: codeText, url: generatedURL },
+        ...currArr,
+      ]);
       return generatedURL;
     });
   }
@@ -28,7 +31,7 @@ export default function QRCodeGenerator() {
       <h1>QR Code Generator</h1>
       <input
         type="text"
-        placeholder="https://www..."
+        placeholder="Your text here..."
         onChange={handleUrlInput}
       />
       <button onClick={handleGenerateClicked}>Generate</button>
@@ -36,7 +39,7 @@ export default function QRCodeGenerator() {
         {myDataURL && <img src={myDataURL} alt={`QR Code for ${inputUrl}`} />}
       </div>
 
-      {lastFiveCodes.length > 0 && <RecentCodes lastFiveCodes={lastFiveCodes} />}
+      {allCodes.length > 0 && <RecentCodes allCodes={allCodes} />}
     </main>
   );
 }
