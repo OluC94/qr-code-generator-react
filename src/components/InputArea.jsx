@@ -1,14 +1,22 @@
 import { useState } from "react"
+import QRCode from "qrcode"
 
-export default function InputArea() {
-    const [urlToGenerate, setUrlToGenerate] = useState("")
+export default function InputArea(props) {
+    const [inputUrl, setInputUrl] = useState("")
 
     function handleUrlInput(event){
-        setUrlToGenerate(event.target.value)
+        setInputUrl(event.target.value)
     }
 
     function handleGenerateClicked() {
-        console.log(urlToGenerate)
+        generateQRCode(inputUrl)
+        
+    }
+
+    function generateQRCode(link) {
+        return QRCode.toDataURL(link).then(generatedURL => {
+            props.setMyDataURL(generatedURL)
+        })
     }
 
     return (<div>
