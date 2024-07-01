@@ -10,6 +10,7 @@ export default function QRCodeGenerator(){
           <h1>QR Code Generator</h1>
           <InputArea 
             setMyDataURL={setMyDataURL}
+            myDataURL={myDataURL}
           />
           <QRCodeArea myDataURL={myDataURL}/>
         </div>

@@ -16,15 +16,17 @@ export default function InputArea(props) {
     function generateQRCode(link) {
         return QRCode.toDataURL(link).then(generatedURL => {
             props.setMyDataURL(generatedURL)
+            return generatedURL
         })
     }
 
     return (<div>
             <input
                 type="text"
-                placeholder="https://..."
+                placeholder="https://www..."
                 onChange={handleUrlInput}
             />
             <button onClick={handleGenerateClicked}>Generate</button>
+            <img src={props.myDataURL}/>
     </div>)
 }
