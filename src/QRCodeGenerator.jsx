@@ -1,34 +1,42 @@
-import { useState } from "react"
-import QRCode from "qrcode"
+import { useState } from "react";
+import QRCode from "qrcode";
+import RecentCodes from "./components/RecentCodes";
 
-export default function QRCodeGenerator(){
-    const [inputUrl, setInputUrl] = useState("")
-    const [myDataURL, setMyDataURL] = useState("")
+export default function QRCodeGenerator() {
+  const [inputUrl, setInputUrl] = useState("");
+  const [myDataURL, setMyDataURL] = useState("");
+  const [lastFiveCodes, setLastFiveCodes] = useState([])
 
-    function handleUrlInput(event){
-        setInputUrl(event.target.value)
-    }
+  function handleUrlInput(event) {
+    setInputUrl(event.target.value);
+  }
 
-    function handleGenerateClicked() {
-        generateQRCode(inputUrl)
-        
-    }
+  function handleGenerateClicked() {
+    generateQRCode(inputUrl);
+  }
 
-    function generateQRCode(link) {
-        return QRCode.toDataURL(link).then(generatedURL => {
-            setMyDataURL(generatedURL)
-            return generatedURL
-        })
-    }
+  function generateQRCode(codeText) {
+    return QRCode.toDataURL(codeText).then((generatedURL) => {
+      setMyDataURL(generatedURL);
+      setLastFiveCodes(currArr => [...currArr, {text: codeText, url: generatedURL}])
+      return generatedURL;
+    });
+  }
 
-    return (<div>
-        <h1>QR Code Generator</h1>
-            <input
-                type="text"
-                placeholder="https://www..."
-                onChange={handleUrlInput}
-            />
-            <button onClick={handleGenerateClicked}>Generate</button>
-            {myDataURL && <img src={myDataURL} alt={`QR Code for ${inputUrl}`}/>}
-    </div>)
+  return (
+    <main>
+      <h1>QR Code Generator</h1>
+      <input
+        type="text"
+        placeholder="https://www..."
+        onChange={handleUrlInput}
+      />
+      <button onClick={handleGenerateClicked}>Generate</button>
+      <div>
+        {myDataURL && <img src={myDataURL} alt={`QR Code for ${inputUrl}`} />}
+      </div>
+
+      {lastFiveCodes.length > 0 && <RecentCodes lastFiveCodes={lastFiveCodes} />}
+    </main>
+  );
 }
